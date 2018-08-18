@@ -17,7 +17,7 @@ android {
 //            buildConfigField "String", "BASE_URL", "\"http://192.168.0.160/api_repairapp/\""
 
             //Live
-            buildConfigField "String", "BASE_URL", "\"http://repairapp.technostacks.com/api/\""
+            buildConfigField "String", "BASE_URL", ""
             // signingConfig signingConfigs.release
         }
         release {
