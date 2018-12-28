@@ -13,11 +13,8 @@ android {
     buildTypes {
         debug {
 
-//           // Local
-//            buildConfigField "String", "BASE_URL", "\"http://192.168.0.160/api_repairapp/\""
-
             //Live
-            buildConfigField "String", "BASE_URL", ""
+            buildConfigField "String", "BASE_URL", "\"http://google.com/\""
             // signingConfig signingConfigs.release
         }
         release {

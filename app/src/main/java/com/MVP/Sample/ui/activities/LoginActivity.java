@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.MVP.Sample.MVPSampleApp;
@@ -16,6 +17,7 @@ import com.MVP.Sample.mvp.presenters.LoginPresenter;
 import com.MVP.Sample.mvp.presenters.LoginPresenterImpl;
 import com.MVP.Sample.response_models.LoginResponse;
 import com.MVP.Sample.response_models.UserInfo;
+import com.MVP.Sample.utils.Constants;
 import com.MVP.Sample.utils.SharedPrefHelper;
 import com.MVP.Sample.utils.Utility;
 
@@ -31,6 +33,8 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
     EditText edtEmailLogin;
     @BindView(R.id.edtPasswordLogin)
     EditText edtPasswordLogin;
+    @BindView(R.id.checkBoxRemenberMe)
+    RadioButton checkBoxRemenberMe;
 
     //Implementer to create business logic for same
     private LoginPresenterImpl presenter;
@@ -39,7 +43,6 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
 
     //Shared Pref Helper
     private SharedPrefHelper sharedPrefHelper;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,15 +63,16 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
         model = new LoginActivityModel(this);
 
         sharedPrefHelper = new SharedPrefHelper(this);
-//        /**
-//         * Get and set user name and pass
-//         * Check user name and pass are exist in pref If user have remember
-//         */
-//        if (sharedPrefHelper.isRemembered()) {
-//            edtEmailLogin.setText(sharedPrefHelper.getRememberMe().get(Constants.SharedPrefKey.USER_EMAIL));
-//            edtPasswordLogin.setText(sharedPrefHelper.getRememberMe().get(Constants.SharedPrefKey.USER_PASS));
-//            checkBoxRemenberMe.setChecked(true);
-//        }
+
+        /*
+         * Get and set user name and pass
+         * Check user name and pass are exist in pref If user have remember
+         */
+        if (sharedPrefHelper.isRemembered()) {
+            edtEmailLogin.setText(sharedPrefHelper.getRememberMe().get(Constants.SharedPrefKey.USER_EMAIL));
+            edtPasswordLogin.setText(sharedPrefHelper.getRememberMe().get(Constants.SharedPrefKey.USER_PASS));
+            checkBoxRemenberMe.setChecked(true);
+        }
     }
 
     @OnClick({R.id.btn_login_LoginActivity, R.id.txtForgotPasswordLoginActivity})
@@ -80,7 +84,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
             case R.id.txtForgotPasswordLoginActivity:
                 break;
 
-            /**
+            /*
              *Request for login
              */
             case R.id.btn_login_LoginActivity:
@@ -95,7 +99,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
     @Override
     protected void onResume() {
         super.onResume();
-        /**
+        /*
          * Register event bus
          */
         presenter.registerBus();
@@ -104,43 +108,76 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
     @Override
     protected void onPause() {
         super.onPause();
-        /**
+        /*
          * Unregister event bus
          */
         presenter.unRegisterBus();
     }
 
+    /**
+     * Show Snack bar
+     * IF isTypeError = true it is error else success msg
+     *
+     * @param message
+     */
     @Override
     public void showError(String message) {
         Utility.showSnackBar(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG, true, this);
     }
 
+    /**
+     * Show Snack bar
+     * IF isTypeError = true it is error else success msg
+     *
+     * @param message
+     */
     @Override
     public void showSnackBar(String message) {
         Utility.showSnackBar(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT, true, this);
     }
 
+    /**
+     * Show toast
+     *
+     * @param message
+     */
     @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-
+    /**
+     * show progress dialog
+     */
     @Override
     public void showProgress() {
         Utility.showProgressDialog(this, "");
     }
 
+    /**
+     * Hide Progress Dialog
+     */
     @Override
     public void hideProgress() {
         Utility.hideProgressDialog();
     }
 
+
+    /**
+     * Get current Activity
+     *
+     * @return
+     */
     @Override
     public Activity getViewActivity() {
         return this;
     }
 
+    /**
+     * Fire when network changed
+     *
+     * @param isConnect
+     */
     @Override
     public void onNetworkStateChange(boolean isConnect) {
 
@@ -157,12 +194,18 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
             MVPSampleApp.setLoggedInUser(data);
             MVPSampleApp.resetClient();
 
-            //if (checkBoxRemenberMe.isChecked()) {
-            //sharedPrefHelper.setRememberMe(edtEmailLogin.getText().toString().trim(), edtPasswordLogin.getText().toString().trim());
-//            } else {
-//                sharedPrefHelper.clearRememberMe();
-//            }
-
+            /*
+             * Save Remember Me if RememberMe is ON
+             */
+            if (checkBoxRemenberMe.isChecked()) {
+                sharedPrefHelper.setRememberMe(edtEmailLogin.getText().toString().trim(), edtPasswordLogin.getText().toString().trim());
+            } else {
+                sharedPrefHelper.clearRememberMe();
+            }
+            /*
+             * Move to Main Activity
+             * With Clear all previous activities
+             */
             startActivity(new Intent(this, MainActivity.class));
             finishAffinity();
         } else {
@@ -170,6 +213,10 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginV
         }
     }
 
+    /**
+     * Get Current Activity Model
+     * @return
+     */
     @Override
     public LoginActivityModel doRetrieveModel() {
         return this.model;

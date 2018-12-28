@@ -234,11 +234,6 @@ public class Utility {
         }
     }
 
-//    public static RequestBody getRequest(String reqString) {
-//        MediaType mediaType = MediaType.parse(Constants.ApiHeaders.API_TYPE_JSON);
-//        return RequestBody.create(mediaType, reqString);
-//    }
-
     /**
      * This method is used to show progress indicator dialog with message when
      * web service is called.
@@ -285,11 +280,6 @@ public class Utility {
     }
 
 
-    /**
-     * Method Name: hideProgressDialog Created By: dev458 Created Date:
-     * 28/March/2013 Modified By: Modified Date: Purpose: This method is used to
-     * hide progress dialog and destroy progress dialog instance .
-     */
     public static void hideProgressDialog() {
         try {
             if (progressDialog != null && progressDialog.isShowing()) {
@@ -379,74 +369,6 @@ public class Utility {
         }
     }
 
-    public static int manipulateColor(int color, float factor) {
-        int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * factor);
-        int g = Math.round(Color.green(color) * factor);
-        int b = Math.round(Color.blue(color) * factor);
-        return Color.argb(a,
-                Math.min(r, 255),
-                Math.min(g, 255),
-                Math.min(b, 255));
-    }
-
-    /**
-     * Animation for remove text value
-     *
-     * @param view
-     * @param iv_add_new_customer
-     * @return
-     */
-    public static TranslateAnimation setAnimation(final View view, final ImageView iv_add_new_customer) {
-        TranslateAnimation animObj = new TranslateAnimation(0, -((view.getWidth() / 2) + 100), 0, 0);
-        animObj.setDuration(600);
-        animObj.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                iv_add_new_customer.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        return animObj;
-
-    }
-
-
-    public static Animation floatingGoneAnimation(final Context mContext, final View view, final boolean isAfterVisible) {
-
-        Log.e(TAG, "floatingGoneAnimation ");
-        final Animation shrinkAnimation = AnimationUtils.loadAnimation(mContext, R.anim.simple_shrink);
-        shrinkAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (isAfterVisible) {
-                    view.setAnimation(floatingVisibleAnimation(mContext, view));
-                } else {
-                    view.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        return shrinkAnimation;
-    }
-
     public static Animation floatingVisibleAnimation(Context mContext, final View view) {
         view.setVisibility(View.VISIBLE);
         Log.e(TAG, "floatingVisibleAnimation ");
@@ -470,60 +392,7 @@ public class Utility {
         return growAnimation;
     }
 
-    public static void floatingScalLeft(View view, View view1) {
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 0.0f);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 0.0f);
-        scaleDownX.setDuration(800);
-        scaleDownY.setDuration(800);
 
-        ObjectAnimator moveUpY = ObjectAnimator.ofFloat(view, "translationX", -((view1.getWidth() / 2)));
-        moveUpY.setDuration(800);
-
-        AnimatorSet scaleDown = new AnimatorSet();
-        AnimatorSet moveUp = new AnimatorSet();
-
-        scaleDown.play(scaleDownX).with(scaleDownY);
-        moveUp.play(moveUpY);
-
-        scaleDown.start();
-        moveUp.start();
-    }
-
-    public static void floatingOpen(View view, View view1) {
-
-        TranslateAnimation animation = new TranslateAnimation(view1.getX() - view.getX(), 0, view1.getY() - view.getY(), 0);
-        animation.setRepeatMode(0);
-        animation.setDuration(200);
-        animation.setFillAfter(true);
-        view.startAnimation(animation);
-    }
-
-    public static void floatingClose(View view, View view1) {
-        TranslateAnimation animation = new TranslateAnimation(0, view1.getX() - view.getX(), 0, view1.getY() - view.getY());
-        animation.setRepeatMode(0);
-        animation.setDuration(200);
-        animation.setFillAfter(true);
-        view.startAnimation(animation);
-    }
-
-    public static void floatingScalOrg(View view, View view1) {
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1f);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f);
-        scaleDownX.setDuration(600);
-        scaleDownY.setDuration(600);
-
-        ObjectAnimator moveUpY = ObjectAnimator.ofFloat(view, "translationX", 0);
-        moveUpY.setDuration(600);
-
-        AnimatorSet scaleDown = new AnimatorSet();
-        AnimatorSet moveUp = new AnimatorSet();
-
-        scaleDown.play(scaleDownX).with(scaleDownY);
-        moveUp.play(moveUpY);
-
-        scaleDown.start();
-        moveUp.start();
-    }
 
     public static String getCompereDate(String orgDate) {
         SimpleDateFormat inputFormat1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

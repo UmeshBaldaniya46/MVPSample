@@ -2,6 +2,7 @@ package com.MVP.Sample.APIHelper;
 
 import android.annotation.SuppressLint;
 
+import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.MVP.Sample.BuildConfig;
@@ -13,11 +14,13 @@ import com.MVP.Sample.response_models.LoginResponse;
 import com.MVP.Sample.utils.Utility;
 
 import org.greenrobot.eventbus.EventBus;
+import org.reactivestreams.Subscriber;
 
 import java.net.SocketTimeoutException;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.internal.operators.flowable.FlowableAmb;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,6 +45,33 @@ public class RestApisImpl {
 
     @SuppressLint("CheckResult")
     public void doLogin(LoginRequest reqString) {
+
+
+/*        {
+                "code": 200,
+                "url": "Users/commonlogin.json",
+                "message": "Login successfully.",
+                "data": {
+                    "Users": {
+                        "id": 145,
+                        "workshop_id": 41,
+                        "firstname": "dev",
+                        "lastname": "cust",
+                        "username": "devcust",
+                        "email": "devcust@gmail.com",
+                        "user_profile": "",
+                        "modified": "2018-12-26T08:57:27"
+                            }
+                        }
+        }
+*/
+
+        /*
+         * For this Architecture API response are same as above
+         * Like code, message, and data(Json object) are fixed
+         * Users data is different by api
+         * Users should be any things JsonArray or JsonObject
+         */
 
         Flowable<GenericModel<LoginResponse>> getusers = mRestApis.doLogin(Utility.getRequest(MVPSampleApp.getGsonWithExpose().toJson(reqString)));
         getusers.subscribeOn(Schedulers.newThread())
